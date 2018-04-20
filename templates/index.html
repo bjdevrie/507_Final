@@ -33,7 +33,7 @@
         {% endfor %}
     </table>
 
-
+    {% if warnings != None %}
     <h2>Outstanding Issues:</h2>
     <hr>
     <table border=1>
@@ -43,15 +43,15 @@
             <td><b>Error(s)</b></td>
             <td><b>Link to Webpage</b></td>
         </tr>
-
-    {% for w in warnings %}
-        <tr>
-            <td>{{w[3]}}</td>
-            <td>{{w[0]}}</td>
-            <td>{{w[1]}}</td>
-            <td><a href="{{w[2]}}" target="_blank">Link</a></td>
-        </tr>
-    {% endfor %}
+        {% for w in warnings %}
+            <tr>
+                <td>{{w[3]}}</td>
+                <td>{{w[0]}}</td>
+                <td>{{w[1]}}</td>
+                <td><a href="{{w[2]}}" target="_blank">Link</a></td>
+            </tr>
+        {% endfor %}
+    {% endif %}
 
     </table>
 </div>

@@ -12,14 +12,18 @@
     <div id="subnav">
         {% include 'nav.html' %}
     </div>
+    {% if message != None %}
+        <p style="font-weight:bold; color:red;">{{message}}</p>
+    {% endif %}
     <h1>Results for {{type}}</h1>
+    <form action="/results/{{type}}" method="POST">
+        <input type="submit" value="Click to download data"/>
+    </form><br/>
     <table border=1>
         <tr>
-            <td><b>Name</b></td>
-            <td><b>License Number</b></td>
-            <td><b>Issue Date</b></td>
-            <td><b>Link</b></td>
-            <td><b>License Expiration</b></td>
+            {% for entry in headers %}
+            <td><b>{{entry}}</b></td>
+            {% endfor %}
         </tr>
         {% for entry in data %}
         <tr>

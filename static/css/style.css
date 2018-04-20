@@ -39,6 +39,11 @@ figure figcaption {
     text-align: center;
 }
 
+p.message {
+    color: red;
+    font-weight: bold;
+
+}
 
 .header {
 	background-color:#00274c ;

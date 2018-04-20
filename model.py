@@ -14,12 +14,68 @@ CACHE_FNAME = 'cache.json'
 now = str(datetime.datetime.now()).split()[0]  #Today's date as string 'YYYY-MM-DD'
 
 """
-Data Class
+Class
 """
+#when a report is generated on the website, the results are also loaded into a class in case the results want to be downloaded as a csv
+class Report():
+    def __init__(self, title=None, test=None, type=None, fileName=None, License=None, id=None, table=None):
+        self.title = title
+        self.type = type
+        self.fileName= fileName
+        self.error=False
+        if self.title == None:
+            self.title = self.type
+        if self.fileName==None:
+            self.fileName = self.type
 
-class Data(object):
-    def __init__(self):
-        pass
+        if test == 'all':
+            self.headers = ['Name','License Number', 'Issue Date', 'Link', 'License Expiration']
+            self.fileName='All_data'
+            self.data = qry_results()
+
+        if test == 'results':
+            self.headers = ['Name','License Number', 'Issue Date', 'Link', 'License Expiration']
+            self.data = qry_results(type=self.type)
+
+        if test == 'License':
+            License=str(License)
+            licList = get_licenses_from_db()
+            if License in licList:
+                self.headers = {'Reputation': ['License Number','LARA Number','NAME','License Type', 'Issue Date', 'Ignore', 'Edit Data'],'LicenseData':['DataDate','License Status', 'License Expiration', 'Warnings', 'Url', 'Address','Ignore']}
+                repData=retrieve_data(License, 'Reputation')
+                dates =  get_dates()
+                licData = []
+                for i in dates:
+                    try:
+                        licData.append(retrieve_data(License, 'LicenseData', date=i))
+                    except:
+                        pass
+                self.data = {'Reputation':repData, 'LicenseData':licData}
+            else:
+                self.data=None
+                self.headers=None
+                self.error = True
+
+        if test == 'Edit':
+            self.table = table
+            self.id = id
+            self.data = ret_ID(self.table,self.id)
+
+
+
+    def write_rpt(self):
+        self.fileName += '.csv'
+        with open (self.fileName,'w',newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(self.headers)
+            for row in self.data:
+                writer.writerow(row)
+
+    def get_data(self):
+        return self.data
+
+    def get_headers(self):
+        return self.headers
 
 """
 CACHE / Data Collection Functions
@@ -689,6 +745,19 @@ def retrieve_data(LicenseNumber, table, date=now):
     conn.close()
     return data
 
+def ret_ID(table,ID):
+    conn = sql3.connect(DBNAME)
+    cur = conn.cursor()
+    cur.execute('''
+    SELECT *
+    FROM {}
+    WHERE Id = {}
+    '''.format(table,ID))
+    data = cur.fetchone()
+    conn.close()
+    return data
+
+
 #This function is used to describe the data contained within the database - it is used by the flask application
 # returns list of tuples
 def retrieveLicData():
@@ -721,6 +790,25 @@ def qry_results(type=''):
     data=cur.fetchall()
     conn.close()
     return data
+
+def get_license_from_id(id):
+    conn = sql3.connect(DBNAME)
+    cur = conn.cursor()
+    cur.execute('''
+    SELECT LicenseNumber
+    FROM Reputation
+    WHERE Id = {}
+    '''.format(id))
+    data = cur.fetchone()[0]
+    return data
+
+def get_Licenses_Id_from_Db():
+    retList=[]
+    Licenses=get_licenses_from_db()
+    for license in Licenses:
+        retList.append((license, get_rep_id_from_db(license)))
+    return retList
+
 
 """
 Database/CACHE integrity functions
@@ -827,7 +915,9 @@ def data_check(DBNAME = DBNAME, date=now):
     dates = get_dates()
     if date not in dates:
         update_licenseData(date=date)
+    if date not in CACHE['Avail_Data_Dates'] and date == now:
         CACHE['Avail_Data_Dates'].insert(0,date)
+        write_cache()
 
 def edit_cache(LicenseNumber, type='parse', date=now, term=False):
     License=str(LicenseNumber)

@@ -35,9 +35,6 @@ class TestDatabase(unittest.TestCase):
 
     def test_db_editing(self):
 
-        '''
-        Reputation Table
-        '''
         Higgins_License='6801067165'
         updated_license = '8675309'
         #ensure this license does not exist in db
@@ -62,12 +59,6 @@ class TestDatabase(unittest.TestCase):
         edit_reputation(updated_license, term=True)  #neither new_license or Higgins license should be in DB
         self.assertEqual(check_if_data_exists(Higgins_License)[0], False)
         self.assertEqual(check_if_data_exists(updated_license)[0], False)
-
-        '''
-        LicenseData Table
-        '''
-
-        # edit_licenseData
 
         '''
         Database Cleanup

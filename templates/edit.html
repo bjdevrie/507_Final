@@ -16,12 +16,94 @@
         {% include 'nav.html' %}
     </div>
 
-    <form action="/postentry" method="POST">
-        <p>License <input type="text" name="License"/></p>
-        <p>Your message: </p>
-        <p><textarea name="message" rows=10 cols=60></textarea></p>
-        <p><input type="submit" value="Submit Changes"/></p>
+    <h1> Edit License </h1>
+
+    <h2>Add a license </h2>
+    <h3>Note: if data is invalid or License is inaccurately entered, it likely will not be displayed </h3>
+    <form action="/add" method="POST">
+        <p>License to be Added: <input type="text" name="License"/></p>
+        <p><input type="submit" value="Add"/></p>
     </form>
+
+    <hr>
+
+    {% if license == None %}
+    <h2> Search for License </h2>
+    <form action="/edit" method="POST">
+        <p>License to be searched: <input type="text" name="License"/></p>
+        <p><input type="submit" value="search"/></p>
+    </form>
+<hr>
+    <h2> Currently Tracked Licenses </h2>
+
+    <table border=1>
+        <tr>
+            <td>License Number</td>
+            <td>Link</td>
+        </tr>
+
+        {% for entry in data %}
+        <tr>
+            <td>{{entry[0]}}</td>
+            <td><form action="/edit/Reputation-{{entry[1]}}" method="GET">
+                <input type="submit" value="Click to Edit"/>
+            </form></td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    {% endif %}
+
+    {% if license != None %}
+
+    <h2> Meta Data </h2>
+    <table border=1>
+        <tr>
+            {% for entry in rHeaders %}
+            <td><b>{{entry}}</b></td>
+            {% endfor %}
+        </tr>
+        <tr>
+        {% for entry in rData[1:] %}
+            <td>{{entry}}</td>
+        {% endfor %}
+        <td><form action="/edit/Reputation-{{rData[0]}}" method="GET">
+            <input type="submit" value="Click to Edit data"/>
+        </form></td>
+        </tr>
+    </table>
+
+
+
+    <h2> Data Points </h2>
+    <table border=1>
+        <tr>
+            {% for entry in lHeaders %}
+            <td><b>{{entry}}</b></td>
+            {% endfor %}
+        </tr>
+        {% for entry in lData %}
+        <tr>
+            <td>{{entry[2]}}</td>
+            <td>{{entry[3]}}</td>
+            <td>{{entry[4]}}</td>
+            <td>{{entry[5]}}</td>
+            <td>{{entry[6]}}</td>
+            <td>{{entry[8]}}</td>
+            <td>{{entry[7]}}</td>
+            <!-- <td><form action="/edit/LicenseData-{{entry[0]}}" method="GET">
+                <input type="submit" value="Click to Edit data"/>
+            </form></td> -->
+        </tr>
+        {% endfor %}
+    </table>
+
+
+
+    {% endif %}
+
+
 
 </div>
 </html>
