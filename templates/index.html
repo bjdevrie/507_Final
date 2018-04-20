@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='UMich-favicon.ico') }}" type="image/vnd.microsoft.icon" />
+    <title>License Dashboard</title>
+</head>
+<body>
+
+<div class="header">
+    <img src="{{ url_for('static', filename='logo.png')}}" width="35%">
+</div>
+
+<div id="content">
+    <div id="subnav">
+        {% include 'nav.html' %}
+    </div>
+    <h1>License Dashboard</h1>
+    <h2>Tracked Licenses:</h2>
+    <hr>
+    <table border=1>
+        <tr>
+            <td><b>License Type</b></td>
+            <td><b>Count of License Type</b></td>
+            <td><b>Detail</b></td>
+        </tr>
+        {% for l  in licenses %}
+        <tr>
+            <td>{{l[0]}}</td>
+            <td>{{l[1]}}</td>
+            <td><a href="/results/{{l[0]}}">Link</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+    <h2>Outstanding Issues:</h2>
+    <hr>
+    <table border=1>
+        <tr>
+            <td><b>Data Accessed on</b></td>
+            <td><b>Name of Clinician</b></td>
+            <td><b>Error(s)</b></td>
+            <td><b>Link to Webpage</b></td>
+        </tr>
+
+    {% for w in warnings %}
+        <tr>
+            <td>{{w[3]}}</td>
+            <td>{{w[0]}}</td>
+            <td>{{w[1]}}</td>
+            <td><a href="{{w[2]}}" target="_blank">Link</a></td>
+        </tr>
+    {% endfor %}
+
+    </table>
+</div>
+
+</body>
+</html>

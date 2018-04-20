@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='UMich-favicon.ico') }}" type="image/vnd.microsoft.icon" />
+    <title>License Dashboard</title>
+</head>
+<body>
+
+<div class="header">
+    <img src="{{ url_for('static', filename='logo.png')}}" width="35%">
+</div>
+
+<div id="content">
+    <div id="subnav">
+        {% include 'nav.html' %}
+    </div>
+
+    <form action="/postentry" method="POST">
+        <p>License <input type="text" name="License"/></p>
+        <p>Your message: </p>
+        <p><textarea name="message" rows=10 cols=60></textarea></p>
+        <p><input type="submit" value="Submit Changes"/></p>
+    </form>
+
+</div>
+</html>

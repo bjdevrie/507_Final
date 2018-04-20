@@ -1,0 +1,99 @@
+html body {
+	height:100%;
+	width:100%;
+}
+
+img {
+       -ms-interpolation-mode: bicubic;
+}
+
+footer {
+	background-color:#00274c ;
+	padding:1em;
+	padding-bottom:1em;
+	position:fixed;
+	left:0px;
+	bottom:0px;
+	width:100%;
+	height:10vh;
+
+}
+
+footer a {
+	color:#FFFFFF;
+
+}
+
+footer p{
+	color:#FFFFFF;
+}
+
+figure {
+    display: inline-block;
+    margin: 25px; /* adjust as needed */
+}
+figure img {
+    vertical-align: top;
+}
+figure figcaption {
+    text-align: center;
+}
+
+
+.header {
+	background-color:#00274c ;
+	width:100%;
+	height: 10vh;
+	padding:2.5vh;
+
+}
+
+
+.form {
+	display:block;
+}
+
+.width{
+	width:90%;
+}
+
+#content {
+	padding-bottom: 10vh;
+	float:left;
+	width:64%;
+}
+
+#logo {
+	display:block;
+	height:auto;
+	max-height:8vh;
+	max-width:auto;
+	float:left;
+	padding-bottom:.5em;
+}
+
+#sidenav {
+    display:block;
+    float:left;
+	color:#FFFFFF
+}
+
+/* begin screen resolution changes */
+@media only screen and (min-width: 720px) {
+}
+
+/* end screen resolution changes */
+
+@media print {
+	header {
+		display:none;
+	}
+
+	nav {
+		display:none;
+	}
+
+	img {
+		display:none;
+	}
+}

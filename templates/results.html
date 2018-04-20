@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='UMich-favicon.ico') }}" type="image/vnd.microsoft.icon" />
+    <title>{{type}} Results</title>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='logo.png')}}" width="35%">
+    </div>
+    <div id="subnav">
+        {% include 'nav.html' %}
+    </div>
+    <h1>Results for {{type}}</h1>
+    <table border=1>
+        <tr>
+            <td><b>Name</b></td>
+            <td><b>License Number</b></td>
+            <td><b>Issue Date</b></td>
+            <td><b>Link</b></td>
+            <td><b>License Expiration</b></td>
+        </tr>
+        {% for entry in data %}
+        <tr>
+            <td>{{entry[0]}}</td>
+            <td>{{entry[1]}}</td>
+            <td>{{entry[2]}}</td>
+            <td><a href="{{entry[3]}}">Link</a></td>
+            <td>{{entry[4]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
